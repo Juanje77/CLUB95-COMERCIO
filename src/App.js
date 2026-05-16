@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, , onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc, addDoc, collection, query, where, orderBy, onSnapshot, updateDoc, increment, serverTimestamp } from 'firebase/firestore';
 
 const firebaseConfig = {
