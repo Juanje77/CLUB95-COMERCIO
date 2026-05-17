@@ -348,12 +348,26 @@ export default function App() {
               </div>
             </div>
 
-            <input style={styles.input} placeholder='Monto de la compra ($)'
-              value={amount} onChange={e => setAmount(e.target.value)}
-              type='text' inputMode='numeric' />
-            <input style={styles.input} placeholder='Descuento (%)'
-              value={discount} onChange={e => setDiscount(e.target.value)}
-              type='text' inputMode='numeric' />
+            <input
+              style={styles.input}
+              placeholder='Monto de la compra ($)'
+              value={amount}
+              onChange={e => setAmount(e.target.value)}
+              onFocus={e => e.target.select()}
+              type='text'
+              inputMode='decimal'
+              autoComplete='off'
+            />
+            <input
+              style={styles.input}
+              placeholder='Descuento (%)'
+              value={discount}
+              onChange={e => setDiscount(e.target.value)}
+              onFocus={e => e.target.select()}
+              type='text'
+              inputMode='decimal'
+              autoComplete='off'
+            />
 
             {savedPreview && (
               <div style={{ backgroundColor: 'rgba(34,197,94,.08)', border: '1px solid rgba(34,197,94,.25)', borderRadius: 14, padding: 16, textAlign: 'center', marginBottom: 16 }}>
