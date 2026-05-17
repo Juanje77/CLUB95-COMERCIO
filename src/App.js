@@ -49,6 +49,7 @@ export default function App() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [merchantName, setMerchantName] = useState('');
   const [loadingAuth, setLoadingAuth] = useState(true);
   const [qrInput, setQrInput] = useState('');
   const [scannedUser, setScannedUser] = useState(null);
@@ -102,6 +103,31 @@ export default function App() {
       setScreen('app');
     } catch (e) {
       setError('Email o contraseña incorrectos');
+    }
+    setLoading(false);
+  };
+  const registerMerchant = async () => {
+    setError('');
+    if (!merchantName.trim() || !email.trim() || password.length < 6) {
+      setError('Completá todos los campos. Mínimo 6 caracteres.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const { createUserWithEmailAndPassword } = await import('firebase/auth');
+      const { setDoc } = await import('firebase/firestore');
+      const cred = await createUserWithEmailAndPassword(auth, email.trim(), password);
+      await setDoc(doc(db, 'merchants', cred.user.uid), {
+        uid: cred.user.uid,
+        email: email.trim(),
+        name: merchantName.trim(),
+        discountBase: 20,
+        createdAt: serverTimestamp(),
+      });
+      setMerchant({ uid: cred.user.uid, name: merchantName.trim(), discountBase: 20 });
+      setScreen('app');
+    } catch (e) {
+      setError(e.message);
     }
     setLoading(false);
   };
@@ -173,7 +199,6 @@ export default function App() {
       <p style={{ color: T.muted, fontSize: 14, marginTop: 16 }}>Cargando...</p>
     </div>
   );
-
   if (screen === 'login') return (
     <div style={styles.root}>
       <div style={styles.center}>
@@ -188,6 +213,33 @@ export default function App() {
         {error && <p style={{ color: '#EF4444', fontSize: 13, marginBottom: 12 }}>{error}</p>}
         <button style={styles.btn} onClick={login} disabled={loading}>
           {loading ? 'Ingresando...' : 'Acceder'}
+        </button>
+        <button style={styles.btnGhost} onClick={() => { setScreen('register'); setError(''); }}>
+          ¿No tenés cuenta? Registrá tu comercio
+        </button>
+      </div>
+    </div>
+  );
+
+  if (screen === 'register') return (
+    <div style={styles.root}>
+      <div style={styles.center}>
+        <p style={{ fontSize: 42, fontWeight: 900, margin: 0 }}>
+          CLUB<span style={{ color: T.primary }}>95.</span>
+        </p>
+        <p style={{ color: T.muted, fontSize: 13, marginBottom: 40 }}>Registrar comercio</p>
+        <input style={styles.input} placeholder='Nombre del comercio' value={merchantName}
+          onChange={e => setMerchantName(e.target.value)} />
+        <input style={styles.input} placeholder='Email' value={email}
+          onChange={e => setEmail(e.target.value)} type='email' />
+        <input style={styles.input} placeholder='Contraseña (mín. 6 caracteres)' value={password}
+          onChange={e => setPassword(e.target.value)} type='password' />
+        {error && <p style={{ color: '#EF4444', fontSize: 13, marginBottom: 12 }}>{error}</p>}
+        <button style={styles.btn} onClick={registerMerchant} disabled={loading}>
+          {loading ? 'Registrando...' : 'Crear cuenta'}
+        </button>
+        <button style={styles.btnGhost} onClick={() => { setScreen('login'); setError(''); }}>
+          ¿Ya tenés cuenta? Iniciá sesión
         </button>
       </div>
     </div>
