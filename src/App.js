@@ -353,20 +353,19 @@ export default function App() {
               placeholder='Monto de la compra ($)'
               value={amount}
               onChange={e => setAmount(e.target.value)}
-              onFocus={e => e.target.select()}
-              type='text'
-              inputMode='decimal'
-              autoComplete='off'
+              type='number'
+              min='0'
+              step='any'
             />
             <input
               style={styles.input}
               placeholder='Descuento (%)'
               value={discount}
               onChange={e => setDiscount(e.target.value)}
-              onFocus={e => e.target.select()}
-              type='text'
-              inputMode='decimal'
-              autoComplete='off'
+              type='number'
+              min='0'
+              max='100'
+              step='any'
             />
 
             {savedPreview && (
