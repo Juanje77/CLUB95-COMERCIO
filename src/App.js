@@ -164,6 +164,7 @@ export default function App() {
     try {
       await addDoc(collection(db, 'transactions'), {
         userId: scannedUser.uid,
+        userName: scannedUser.displayName || scannedUser.email,
         merchantId: merchant.uid,
         merchantName: merchant.name || merchant.uid,
         amount: amt,
@@ -396,7 +397,7 @@ export default function App() {
         ) : transactions.map(tx => (
           <div key={tx.id} style={styles.row}>
             <div style={{ flex: 1 }}>
-              <p style={{ fontWeight: 700, fontSize: 13, margin: 0 }}>{tx.userId?.slice(0, 12)}...</p>
+              <p style={{ fontWeight: 700, fontSize: 13, margin: 0 }}>{tx.userName || tx.userId?.slice(0, 12) + '...'}</p>
               <p style={{ color: T.muted, fontSize: 11, margin: 0, marginTop: 2 }}>
                 ${tx.amount?.toLocaleString('es-AR')} · {tx.discount}% descuento
               </p>
