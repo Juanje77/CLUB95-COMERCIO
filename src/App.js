@@ -360,6 +360,7 @@ export default function App() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
                   <span style={{ color: T.muted, fontSize: 12 }}>Descuento base</span>
                   <span style={{
+                    s
                     fontWeight: 700,
                     textDecoration: plan?.multiplier < 1 ? 'line-through' : 'none'
                   }}>{discountNum}%</span>
